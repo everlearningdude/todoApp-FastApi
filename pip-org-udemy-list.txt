@@ -1,0 +1,15 @@
+cryptography
+fastapi
+psycopg2-binary
+python-jose
+python-multipart
+SQLAlchemy
+uvicorn
+pytest
+httpx
+pytest-asyncio
+aiofiles
+jinja2
+pybase64
+#time
+requests
