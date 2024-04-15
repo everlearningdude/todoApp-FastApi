@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card Selection</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    .card {
+        transition: all 0.3s ease-in-out;
+        opacity: 1; /* Default opacity */
+    }
+    .card.selected {
+        transform: scale(1.1);
+    }
+    .card:not(.selected) {
+        opacity: 0.5;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Card 1</h5>
+                    <button class="btn btn-primary select-btn" data-options="Option 1, Option 2, Option 3">Select</button>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle mt-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Dropdown
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <!-- Dropdown options will be populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Card 2</h5>
+                    <button class="btn btn-primary select-btn" data-options="Option 4, Option 5, Option 6">Select</button>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle mt-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Dropdown
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <!-- Dropdown options will be populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Add more cards as needed -->
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
