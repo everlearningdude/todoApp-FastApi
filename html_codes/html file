@@ -26,15 +26,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Card 1</h5>
-                    <button class="btn btn-primary select-btn" data-options="Option 1, Option 2, Option 3">Select</button>
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle mt-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Dropdown
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <!-- Dropdown options will be populated dynamically -->
-                        </div>
-                    </div>
+                    <button class="btn btn-primary select-btn" data-product="product1">Select</button>
                 </div>
             </div>
         </div>
@@ -42,19 +34,22 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Card 2</h5>
-                    <button class="btn btn-primary select-btn" data-options="Option 4, Option 5, Option 6">Select</button>
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle mt-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Dropdown
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <!-- Dropdown options will be populated dynamically -->
-                        </div>
-                    </div>
+                    <button class="btn btn-primary select-btn" data-product="product2">Select</button>
                 </div>
             </div>
         </div>
         <!-- Add more cards as needed -->
+    </div>
+</div>
+
+<div class="container mt-4">
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Dropdown
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <!-- Dropdown options will be populated dynamically -->
+        </div>
     </div>
 </div>
 
