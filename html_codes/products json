@@ -1,0 +1,61 @@
+{
+  "products": {
+    "product1": ["template1", "template2"],
+    "product2": ["template2", "template3"]
+  },
+  "templates": {
+    "template1": ["Email", "Age", "Gender"],
+    "template2": ["Username", "Password", "Confirm Password"],
+    "template3": ["Phone Number", "Address"]
+  },
+  "inputs": {
+    "Email": {
+      "label": "Email",
+      "type": "email",
+      "placeholder": "Enter your email",
+      "required": true
+    },
+    "Age": {
+      "label": "Age",
+      "type": "number",
+      "placeholder": "Enter your age",
+      "required": true
+    },
+    "Gender": {
+      "label": "Gender",
+      "type": "text",
+      "placeholder": "Enter your gender",
+      "required": false
+    },
+    "Username": {
+      "label": "Username",
+      "type": "text",
+      "placeholder": "Enter your username",
+      "required": true
+    },
+    "Password": {
+      "label": "Password",
+      "type": "password",
+      "placeholder": "Enter your password",
+      "required": true
+    },
+    "Confirm Password": {
+      "label": "Confirm Password",
+      "type": "password",
+      "placeholder": "Confirm your password",
+      "required": true
+    },
+    "Phone Number": {
+      "label": "Phone Number",
+      "type": "tel",
+      "placeholder": "Enter your phone number",
+      "required": true
+    },
+    "Address": {
+      "label": "Address",
+      "type": "text",
+      "placeholder": "Enter your address",
+      "required": true
+    }
+  }
+}
