@@ -1,16 +1,13 @@
 document.addEventListener("DOMContentLoaded", function() {
     const cards = document.querySelectorAll('.card');
     const dropdownMenu = document.querySelector('.dropdown-menu');
-    const formContainer = document.querySelector('.form-container');
     let productTemplates = {}; // Object to store product templates
-    let templateInputs = {}; // Object to store template inputs
     
-    // Fetch the JSON file containing product templates and inputs
+    // Fetch the JSON file containing product templates
     fetch('products.json')
         .then(response => response.json())
         .then(data => {
             productTemplates = data.templates;
-            templateInputs = data.inputs;
         })
         .catch(error => console.error('Error fetching products:', error));
 
@@ -23,59 +20,23 @@ document.addEventListener("DOMContentLoaded", function() {
             cards.forEach(c => c.classList.remove('selected'));
             // Add 'selected' class to the parent card of the clicked button
             card.classList.add('selected');
-            // Set opacity for all cards based on whether they are selected or not
-            cards.forEach(c => {
-                if (c.classList.contains('selected')) {
-                    c.style.opacity = '1';
-                } else {
-                    c.style.opacity = '0.5';
-                }
-            });
-            // Get the selected product and template
-            const selectedProduct = card.dataset.product;
-            const selectedTemplate = dropdownMenu.querySelector('.dropdown-item.active').textContent;
-            // Populate the form with inputs for the selected template
-            populateForm(selectedProduct, selectedTemplate);
+            // Populate the dropdown menu with options for the selected product
+            populateDropdownMenu(card.dataset.product);
         });
     });
 
-    // Function to populate the form with inputs for the selected template
-    function populateForm(selectedProduct, selectedTemplate) {
-        // Clear previous form inputs
-        formContainer.innerHTML = '';
-        // Get inputs for the selected template from the JSON data
-        const inputs = templateInputs[selectedTemplate];
-        // Check if inputs are available for the selected template
-        if (inputs) {
-            // Populate form with inputs
-            inputs.forEach(input => {
-                const formGroup = document.createElement('div');
-                formGroup.classList.add('form-group');
-                const label = document.createElement('label');
-                label.textContent = input.label;
-                const inputField = document.createElement('input');
-                inputField.setAttribute('type', input.type);
-                inputField.setAttribute('placeholder', input.placeholder);
-                inputField.classList.add('form-control');
-                // Add 'required' attribute if the input is required
-                if (input.required) {
-                    inputField.required = true;
-                }
-                // Add input type validation based on the type specified in the JSON
-                if (input.type === 'email') {
-                    inputField.setAttribute('pattern', '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
-                } else if (input.type === 'number') {
-                    inputField.setAttribute('pattern', '[0-9]+');
-                }
-                formGroup.appendChild(label);
-                formGroup.appendChild(inputField);
-                formContainer.appendChild(formGroup);
-            });
-        } else {
-            // No inputs available for the selected template
-            const noInputsMessage = document.createElement('p');
-            noInputsMessage.textContent = 'No inputs available for this template.';
-            formContainer.appendChild(noInputsMessage);
-        }
+    // Function to populate the dropdown menu with options for the selected product
+    function populateDropdownMenu(selectedProduct) {
+        // Clear previous dropdown options
+        dropdownMenu.innerHTML = '';
+        // Get templates for the selected product
+        const templates = productTemplates[selectedProduct];
+        // Populate dropdown menu with options
+        templates.forEach(template => {
+            const option = document.createElement('a');
+            option.classList.add('dropdown-item');
+            option.textContent = template;
+            dropdownMenu.appendChild(option);
+        });
     }
 });
