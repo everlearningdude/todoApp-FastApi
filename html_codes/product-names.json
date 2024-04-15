@@ -1,0 +1,10 @@
+[
+    {
+        "id": "tomcat",
+        "name": "Product 1"
+    },
+    {
+        "id": "apache",
+        "name": "Product 2"
+    }
+]
