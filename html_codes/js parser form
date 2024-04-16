@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynamic Form from YAML</title>
+</head>
+<body>
+
+<h2>Dynamic Form from YAML</h2>
+
+<!-- Form container -->
+<div id="formContainer"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.0.0/js-yaml.min.js"></script>
+<script>
+// Fetch YAML data
+fetch('data.yaml')
+  .then(response => response.text())
+  .then(yamlText => {
+    // Parse YAML into JavaScript object
+    const formData = jsyaml.load(yamlText).form;
+
+    // Function to create form elements based on YAML structure
+    function createElement(elementData) {
+      const element = document.createElement(elementData.element);
+      for (const attribute in elementData) {
+        if (attribute !== 'element' && attribute !== 'children') {
+          element.setAttribute(attribute, elementData[attribute]);
+        }
+      }
+      if (elementData.children) {
+        elementData.children.forEach(childData => {
+          element.appendChild(createElement(childData));
+        });
+      }
+      return element;
+    }
+
+    // Create form elements based on YAML data
+    const formContainer = document.getElementById('formContainer');
+    formContainer.appendChild(createElement(formData));
+  })
+  .catch(error => {
+    console.error('Error fetching or parsing YAML:', error);
+  });
+</script>
+
+</body>
+</html>
