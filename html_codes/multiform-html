@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Forms</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-5">
+    <h1>Dynamic Forms</h1>
+
+    <!-- Container for dynamic forms -->
+    <div id="dynamicFormsContainer"></div>
+
+    <!-- Button to add another set of form fields -->
+    <button id="addFormBtn" class="btn btn-primary mt-3">Add Form</button>
+
+    <!-- Single submit button -->
+    <button id="submitBtn" class="btn btn-primary mt-3">Submit</button>
+  </div>
+
+  <!-- Bootstrap JS (popper.js and jquery required) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+
+  <!-- Your custom JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
