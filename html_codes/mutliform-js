@@ -1,0 +1,87 @@
+// Function to fetch form fields from JSON file
+async function fetchFormFields() {
+  try {
+    const response = await fetch('formFields.json');
+    if (!response.ok) {
+      throw new Error('Failed to fetch form fields');
+    }
+    const formData = await response.json();
+    return formData;
+  } catch (error) {
+    console.error('Error fetching form fields:', error);
+    return [];
+  }
+}
+
+// Function to create form fields dynamically based on JSON data
+async function createFormFields() {
+  const formFieldsData = await fetchFormFields();
+  let formFieldsHTML = '';
+
+  formFieldsData.forEach(field => {
+    formFieldsHTML += `
+      <div class="mb-3">
+        <label for="${field.name}" class="form-label">${field.label}</label>
+        <input type="${field.type}" class="form-control" name="${field.name}">
+      </div>
+    `;
+  });
+
+  return formFieldsHTML;
+}
+
+// Event listener for "Add Form" button
+document.getElementById('addFormBtn').addEventListener('click', async () => {
+  const dynamicFormsContainer = document.getElementById('dynamicFormsContainer');
+  const newFormFields = await createFormFields();
+  dynamicFormsContainer.insertAdjacentHTML('beforeend', newFormFields);
+});
+
+// Event listener for form submission
+document.getElementById('submitBtn').addEventListener('click', async (event) => {
+  // Prevent default form submission
+  event.preventDefault();
+
+  // Form an array to hold form data
+  const formDataList = [];
+
+  // Get all form fields within the dynamic forms container
+  const dynamicForms = document.querySelectorAll('.dynamic-form');
+
+  // Loop through each form to extract data
+  dynamicForms.forEach(form => {
+    const formData = {};
+    // Extract data from each input field in the form
+    form.querySelectorAll('input').forEach(input => {
+      formData[input.name] = input.value;
+    });
+    formDataList.push(formData);
+  });
+
+  // Log the formDataList for demonstration purposes
+  console.log(formDataList);
+
+  // Example AJAX request to submit the formDataList
+  // Replace 'submit.php' with your actual endpoint
+  fetch('submit.php', {
+    method: 'POST',
+    body: JSON.stringify(formDataList),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Forms submitted successfully:', data);
+    // Handle successful submission
+  })
+  .catch(error => {
+    console.error('Error submitting forms:', error);
+    // Handle error
+  });
+
+  // Mark all forms as touched to trigger validation messages
+  dynamicForms.forEach(form => {
+    form.classList.add('was-validated');
+  });
+});
