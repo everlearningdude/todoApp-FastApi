@@ -1,0 +1,28 @@
+form:
+  id: dynamicForm
+  class: my-form
+  children:
+    - element: div
+      id: personalInfoSection
+      class: form-section
+      children:
+        - element: input
+          type: text
+          name: name
+          placeholder: Name
+        - element: input
+          type: number
+          name: age
+          placeholder: Age
+    - element: div
+      id: contactInfoSection
+      class: form-section
+      children:
+        - element: input
+          type: email
+          name: email
+          placeholder: Email
+        - element: input
+          type: tel
+          name: phone
+          placeholder: Phone
