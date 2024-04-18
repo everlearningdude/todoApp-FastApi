@@ -1,0 +1,24 @@
+- name: Parse logging.properties file
+  hosts: your_tomcat_host
+  become: yes
+
+  tasks:
+    - name: Read logging.properties
+      slurp:
+        src: /path/to/logging.properties
+      register: logging_properties_content
+
+    - name: Convert logging.properties content to string
+      set_fact:
+        logging_properties_string: "{{ logging_properties_content.content | b64decode | decode('utf-8') }}"
+
+    - name: Parse logging.properties content
+      set_fact:
+        logging_properties:
+          "{{ dict(item.split('=') | map('strip')) }}"
+      loop: "{{ logging_properties_string.split('\n') | select('search', '=') }}"
+      when: item != '' and not item.startswith('#')
+      
+    - name: Display logging.properties details
+      debug:
+        var: logging_properties
