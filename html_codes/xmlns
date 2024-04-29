@@ -1,0 +1,19 @@
+- name: Extract xmlns declarations from web.xml
+  hosts: localhost
+  tasks:
+    - name: Read web.xml file
+      ansible.builtin.slurp:
+        path: /path/to/your/web.xml
+      register: web_xml_content
+
+    - name: Remove multi-line comments
+      ansible.builtin.set_fact:
+        xml_content_no_comments: "{{ web_xml_content.content | b64decode | regex_replace('<!--(.*?)-->', '', '\\1', flags='s') }}"
+
+    - name: Extract xmlns declarations
+      ansible.builtin.set_fact:
+        xmlns_declarations: "{{ xml_content_no_comments | regex_findall('xmlns="[^"]+"') }}"
+
+    - name: Display xmlns declarations
+      ansible.builtin.debug:
+        msg: "{{ xmlns_declarations }}"
