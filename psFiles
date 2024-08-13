@@ -1,0 +1,236 @@
+# Add-type to use System.Windows.Forms
+Add-Type -AssemblyName System.Windows.Forms
+
+# Path to the Excel file
+$excelFilePath = "C:\path\to\your\passwordfile.xlsx"
+
+# The sheet and cell where the password is stored
+$sheetName = "Sheet1"
+$cellAddress = "A1"
+
+# Create an Excel COM object
+$excel = New-Object -ComObject Excel.Application
+$excel.Visible = $false
+$workbook = $excel.Workbooks.Open($excelFilePath)
+$worksheet = $workbook.Sheets.Item($sheetName)
+
+# Read the password from the specified cell
+$password = $worksheet.Range($cellAddress).Text
+
+# Close the Excel file
+$workbook.Close($false)
+$excel.Quit()
+[System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) | Out-Null
+
+# Simulate typing the password
+foreach ($char in $password.ToCharArray()) {
+    [System.Windows.Forms.SendKeys]::SendWait($char)
+    Start-Sleep -Milliseconds 100  # Delay between keystrokes
+}
+
+>> to protect
+# Add-type to use System.Windows.Forms
+Add-Type -AssemblyName System.Windows.Forms
+
+# Path to the Excel file
+$excelFilePath = "C:\path\to\your\passwordfile.xlsx"
+
+# The password for the Excel file
+$excelPassword = "YourExcelPassword"
+
+# The sheet and cell where the password is stored
+$sheetName = "Sheet1"
+$cellAddress = "A1"
+
+# Create an Excel COM object
+$excel = New-Object -ComObject Excel.Application
+$excel.Visible = $false
+
+# Open the workbook with a password
+$workbook = $excel.Workbooks.Open($excelFilePath, $null, $false, $null, $excelPassword)
+
+$worksheet = $workbook.Sheets.Item($sheetName)
+
+# Read the password from the specified cell
+$password = $worksheet.Range($cellAddress).Text
+
+# Close the Excel file
+$workbook.Close($false)
+$excel.Quit()
+[System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) | Out-Null
+
+# Simulate typing the password
+foreach ($char in $password.ToCharArray()) {
+    [System.Windows.Forms.SendKeys]::SendWait($char)
+    Start-Sleep -Milliseconds 100  # Delay between keystrokes
+}
+
+>> one key
+# Add-type to use System.Windows.Forms
+Add-Type -AssemblyName System.Windows.Forms
+
+# Load required assemblies
+Add-Type -TypeDefinition @"
+using System;
+using System.Runtime.InteropServices;
+
+public class HotKeyRegister
+{
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+    public const uint MOD_CONTROL = 0x0002;
+    public const uint MOD_SHIFT = 0x0004;
+    public const uint VK_1 = 0x31;
+}
+"@
+
+# Register Ctrl+Shift+1 as the hotkey
+$hotkeyId = 1
+[HotKeyRegister]::RegisterHotKey([IntPtr]::Zero, $hotkeyId, [HotKeyRegister]::MOD_CONTROL -bor [HotKeyRegister]::MOD_SHIFT, [HotKeyRegister]::VK_1)
+
+# Define the Excel file path and cell
+$excelFilePath = "C:\path\to\your\passwordfile.xlsx"
+$sheetName = "Sheet1"
+$cellAddress = "B1"  # This refers to cell (1,2) which is B1
+
+# Wait for the hotkey to be pressed
+$source = New-Object System.Management.Automation.PowerShellEventJobSource
+$source.RegisterHandler('HotKeyPressed', {
+    # Create an Excel COM object
+    $excel = New-Object -ComObject Excel.Application
+    $excel.Visible = $false
+    $workbook = $excel.Workbooks.Open($excelFilePath)
+    $worksheet = $workbook.Sheets.Item($sheetName)
+
+    # Read the value from the specified cell
+    $valueToType = $worksheet.Range($cellAddress).Text
+
+    # Close the Excel file
+    $workbook.Close($false)
+    $excel.Quit()
+    [System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) | Out-Null
+
+    # Simulate typing the value
+    foreach ($char in $valueToType.ToCharArray()) {
+        [System.Windows.Forms.SendKeys]::SendWait($char)
+        Start-Sleep -Milliseconds 100  # Delay between keystrokes
+    }
+})
+
+# Run the script until the hotkey is pressed
+while ($true) {
+    # Process Windows messages to catch the hotkey press
+    $msg = [Windows.Forms.Application]::DoEvents()
+    Start-Sleep -Milliseconds 100
+}
+
+# Unregister the hotkey before exiting the script
+[HotKeyRegister]::UnregisterHotKey([IntPtr]::Zero, $hotkeyId)
+
+
+>> one to nine key
+# Add-type to use System.Windows.Forms
+Add-Type -AssemblyName System.Windows.Forms
+
+# Load required assemblies
+Add-Type -TypeDefinition @"
+using System;
+using System.Runtime.InteropServices;
+
+public class HotKeyRegister
+{
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+    public const uint MOD_CONTROL = 0x0002;
+    public const uint MOD_SHIFT = 0x0004;
+    public const uint VK_1 = 0x31;
+    public const uint VK_2 = 0x32;
+    public const uint VK_3 = 0x33;
+    public const uint VK_4 = 0x34;
+    public const uint VK_5 = 0x35;
+    public const uint VK_6 = 0x36;
+    public const uint VK_7 = 0x37;
+    public const uint VK_8 = 0x38;
+    public const uint VK_9 = 0x39;
+}
+"@
+
+# Define hotkeys for Ctrl+Shift+1 through Ctrl+Shift+9
+$hotkeyIds = 1..9
+$vkKeys = [HotKeyRegister]::VK_1..[HotKeyRegister]::VK_9
+
+# Register the hotkeys
+for ($i = 0; $i -lt $hotkeyIds.Length; $i++) {
+    [HotKeyRegister]::RegisterHotKey([IntPtr]::Zero, $hotkeyIds[$i], [HotKeyRegister]::MOD_CONTROL -bor [HotKeyRegister]::MOD_SHIFT, $vkKeys[$i])
+}
+
+# Define the Excel file path
+$excelFilePath = "C:\path\to\your\passwordfile.xlsx"
+$sheetName = "Sheet1"
+
+# Define a function to type the value from the Excel file
+function TypeValueFromExcel ($rowIndex) {
+    # Create an Excel COM object
+    $excel = New-Object -ComObject Excel.Application
+    $excel.Visible = $false
+    $workbook = $excel.Workbooks.Open($excelFilePath)
+    $worksheet = $workbook.Sheets.Item($sheetName)
+
+    # Read the value from the specified cell in column 2 (B)
+    $cellAddress = "B$rowIndex"
+    $valueToType = $worksheet.Range($cellAddress).Text
+
+    # Close the Excel file
+    $workbook.Close($false)
+    $excel.Quit()
+    [System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) | Out-Null
+
+    # Simulate typing the value
+    foreach ($char in $valueToType.ToCharArray()) {
+        [System.Windows.Forms.SendKeys]::SendWait($char)
+        Start-Sleep -Milliseconds 100  # Delay between keystrokes
+    }
+}
+
+# Run the script until the hotkey is pressed
+while ($true) {
+    $msg = [Windows.Forms.Application]::DoEvents()
+
+    # Check which hotkey was pressed
+    if ($msg -eq $hotkeyIds[0]) {
+        TypeValueFromExcel 1  # Ctrl+Shift+1 types from B1
+    } elseif ($msg -eq $hotkeyIds[1]) {
+        TypeValueFromExcel 2  # Ctrl+Shift+2 types from B2
+    } elseif ($msg -eq $hotkeyIds[2]) {
+        TypeValueFromExcel 3  # Ctrl+Shift+3 types from B3
+    } elseif ($msg -eq $hotkeyIds[3]) {
+        TypeValueFromExcel 4  # Ctrl+Shift+4 types from B4
+    } elseif ($msg -eq $hotkeyIds[4]) {
+        TypeValueFromExcel 5  # Ctrl+Shift+5 types from B5
+    } elseif ($msg -eq $hotkeyIds[5]) {
+        TypeValueFromExcel 6  # Ctrl+Shift+6 types from B6
+    } elseif ($msg -eq $hotkeyIds[6]) {
+        TypeValueFromExcel 7  # Ctrl+Shift+7 types from B7
+    } elseif ($msg -eq $hotkeyIds[7]) {
+        TypeValueFromExcel 8  # Ctrl+Shift+8 types from B8
+    } elseif ($msg -eq $hotkeyIds[8]) {
+        TypeValueFromExcel 9  # Ctrl+Shift+9 types from B9
+    }
+
+    Start-Sleep -Milliseconds 100
+}
+
+# Unregister the hotkeys before exiting the script
+foreach ($hotkeyId in $hotkeyIds) {
+    [HotKeyRegister]::UnregisterHotKey([IntPtr]::Zero, $hotkeyId)
+}
+
+
