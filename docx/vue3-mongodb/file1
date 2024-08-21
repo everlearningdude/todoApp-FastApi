@@ -1,0 +1,186 @@
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// MongoDB Connection
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log('MongoDB connected'))
+.catch((err) => console.error('MongoDB connection error:', err));
+
+// Todo Schema
+const todoSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  completed: { type: Boolean, default: false },
+});
+
+const Todo = mongoose.model('Todo', todoSchema);
+
+// Routes
+app.get('/todos', async (req, res) => {
+  try {
+    const todos = await Todo.find();
+    res.json(todos);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+app.post('/todos', async (req, res) => {
+  const todo = new Todo({
+    title: req.body.title,
+  });
+
+  try {
+    const newTodo = await todo.save();
+    res.status(201).json(newTodo);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+app.patch('/todos/:id', async (req, res) => {
+  try {
+    const todo = await Todo.findById(req.params.id);
+    if (todo == null) {
+      return res.status(404).json({ message: 'Cannot find todo' });
+    }
+
+    if (req.body.title != null) {
+      todo.title = req.body.title;
+    }
+    if (req.body.completed != null) {
+      todo.completed = req.body.completed;
+    }
+
+    const updatedTodo = await todo.save();
+    res.json(updatedTodo);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+app.delete('/todos/:id', async (req, res) => {
+  try {
+    const todo = await Todo.findById(req.params.id);
+    if (todo == null) {
+      return res.status(404).json({ message: 'Cannot find todo' });
+    }
+
+    await todo.remove();
+    res.json({ message: 'Todo deleted' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Start Server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+
+======
+
+
+<template>
+  <div>
+    <h1>Todo List</h1>
+    <input v-model="newTodo" @keyup.enter="addTodo" placeholder="Add a new todo" />
+    <ul>
+      <li v-for="todo in todos" :key="todo._id">
+        <input type="checkbox" v-model="todo.completed" @change="toggleTodo(todo)" />
+        <span :class="{ completed: todo.completed }">{{ todo.title }}</span>
+        <button @click="deleteTodo(todo._id)">Delete</button>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+
+export default {
+  setup() {
+    const newTodo = ref('');
+    const todos = ref([]);
+
+    const fetchTodos = async () => {
+      const response = await axios.get('http://localhost:3000/todos');
+      todos.value = response.data;
+    };
+
+    const addTodo = async () => {
+      if (!newTodo.value) return;
+      const response = await axios.post('http://localhost:3000/todos', { title: newTodo.value });
+      todos.value.push(response.data);
+      newTodo.value = '';
+    };
+
+    const toggleTodo = async (todo) => {
+      await axios.patch(`http://localhost:3000/todos/${todo._id}`, { completed: todo.completed });
+    };
+
+    const deleteTodo = async (id) => {
+      await axios.delete(`http://localhost:3000/todos/${id}`);
+      todos.value = todos.value.filter(todo => todo._id !== id);
+    };
+
+    onMounted(fetchTodos);
+
+    return {
+      newTodo,
+      todos,
+      addTodo,
+      toggleTodo,
+      deleteTodo,
+    };
+  },
+};
+</script>
+
+<style>
+.completed {
+  text-decoration: line-through;
+}
+</style>
+
+
+=====
+package.json
+
+{
+  "name": "vue-todo-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  ...
+}
+
+
+
+=====
+
+.env
+
+MONGODB_URI=mongodb://<username>:<password>@<host>:<port>/<database>
+PORT=3000
+
+=====
+
