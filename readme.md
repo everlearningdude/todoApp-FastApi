@@ -1,3 +1,4 @@
+```mermaid```
 flowchart TD
     A[User Initiates Transaction] --> B[Funds are Tokenized]
     B --> C[Smart Contract Validates Transaction]
@@ -13,3 +14,4 @@ flowchart TD
 
     style J fill:#f96,stroke:#333,stroke-width:2px
     style K fill:#f96,stroke:#333,stroke-width:2px
+```
