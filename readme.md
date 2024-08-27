@@ -14,4 +14,3 @@ flowchart TD
 
     style J fill:#f96,stroke:#333,stroke-width:2px
     style K fill:#f96,stroke:#333,stroke-width:2px
-```
